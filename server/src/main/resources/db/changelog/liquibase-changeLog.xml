@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+    <changeSet id="event_types" author="ProkudinMM">
+        <createTable tableName="event_types">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true"
+                             unique="true" uniqueConstraintName="eventtypes_typeid_uindex"
+                             nullable="false"/>
+            </column>
+            <column name="name" type="varchar(100)">
+                <constraints unique="true" uniqueConstraintName="names_pk" nullable="false"/>
+            </column>
+            <column name="count" type="int" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="events" author="ProkudinMM">
+        <createTable tableName="events">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" unique="true" uniqueConstraintName="events_pk" nullable="false"/>
+            </column>
+            <column name="latitude" type="decimal"/>
+            <column name="longitude" type="decimal"/>
+            <column name="address" type="varchar"/>
+            <column name="owner_age" type="integer"/>
+
+            <column name="date_time" type="timestamp"/>
+            <column name="from_count" type="integer"/>
+            <column name="to_count" type="integer"/>
+            <column name="comment" type="text"/>
+
+            <column name="created" type="timestamp"/>
+            <column name="target_age_from" type="integer"/>
+            <column name="target_age_to" type="integer"/>
+            <column name="deleted" type="bool" defaultValue="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="cost" type="integer"/>
+            <column name="silence" type="bool" defaultValue="true">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="type_id" type="int">
+                <constraints
+                        referencedTableName="event_types"
+                        referencedColumnNames="id"
+                        foreignKeyName="types_fk"
+                        nullable="false"/>
+            </column>
+
+            <column name="phone" type="varchar(36)"/>
+
+        </createTable>
+        <sqlFile path="latlong.sql"/>
+    </changeSet>
+
+    <changeSet id="users_table" author="ProkudinMM">
+        <createTable tableName="users">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true"
+                             unique="true"
+                             uniqueConstraintName="users_id_constraint"
+                             nullable="false"/>
+            </column>
+            <column name="username" type="varchar(50)">
+                <constraints primaryKey="true"
+                             unique="true"
+                             uniqueConstraintName="users_username_constraint"
+                             nullable="false"/>
+            </column>
+            <column name="password" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
